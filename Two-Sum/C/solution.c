@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct map {
     int key;
@@ -29,26 +29,63 @@ void pushFront(map **old, map* new) {
     *old = new;
 }
 
+void insertToHashMap(map **hashMap, int hashKey, int key, int value) {
+
+    map *new = newMap(key, value);
+
+    map *head = hashMap[hashKey];
+
+    if (head != NULL) {
+
+        pushFront(&head, new);
+        return;
+    }
+
+    hashMap[hashKey] = new;
+}
+
+int hash(int key, int mapSize) {
+
+    if (key < 0)
+        key = -key;
+
+    return key % mapSize;
+}
+
+map* getValue(map **hashMap, int key, int number) {
+
+    if (hashMap[key] == NULL) return NULL;
+
+    map *head = hashMap[key];
+
+    while (head){
+
+        if (head->key == number) return head;
+        head = head->next;
+    }
+
+    return NULL;
+}
+
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     
-    map **hashMap = newHashMap(2000000001);
-    int roundNum = 1000000000;
+    int mapSize = 10000;
+    map **hashMap = newHashMap(mapSize);
     int *res = malloc(sizeof(int) * 2);
 
     int i = 0;
     while (i < numsSize) {
 
-        map *complement = hashMap[(target - nums[i]) + roundNum];
-        if (complement != NULL){
+        int key = hash(nums[i], mapSize);
+        map *complement = getValue(hashMap, key, nums[i]);
+        if (complement != NULL) {
             res[0] = i;
             res[1] = complement->val;
 
             return res;
         }
-        else {
-            map *new = newMap(nums[i] + roundNum, i);
-            hashMap[nums[i] + roundNum] = new;
-        }
+
+        insertToHashMap(hashMap, key, nums[i], i);
 
         i++;
     }
