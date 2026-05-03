@@ -33,11 +33,9 @@ void insertToHashMap(map **hashMap, int hashKey, int key, int value) {
 
     map *new = newMap(key, value);
 
-    map *head = hashMap[hashKey];
+    if (hashMap[hashKey] != NULL) {
 
-    if (head != NULL) {
-
-        pushFront(&head, new);
+        pushFront(&hashMap[hashKey], new);
         return;
     }
 
