@@ -59,7 +59,7 @@ map* getValue(map **hashMap, int key, int number) {
     map *head = hashMap[key];
 
     while (head){
-
+        
         if (head->key == number) return head;
         head = head->next;
     }
@@ -69,23 +69,23 @@ map* getValue(map **hashMap, int key, int number) {
 
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     
-    int mapSize = 10000;
+    int mapSize = 100000;
     map **hashMap = newHashMap(mapSize);
     int *res = malloc(sizeof(int) * 2);
+    *returnSize = 2;
 
     int i = 0;
     while (i < numsSize) {
 
-        int key = hash(nums[i], mapSize);
-        map *complement = getValue(hashMap, key, nums[i]);
+        int key = hash(target - nums[i], mapSize);
+        map *complement = getValue(hashMap, key, target - nums[i]);
         if (complement != NULL) {
             res[0] = i;
             res[1] = complement->val;
-
             return res;
         }
 
-        insertToHashMap(hashMap, key, nums[i], i);
+        insertToHashMap(hashMap, hash(nums[i], mapSize), nums[i], i);
 
         i++;
     }
@@ -101,7 +101,7 @@ int main() {
     
     if (result != NULL) {
         printf("Indices: [%d, %d]\n", result[0], result[1]);
-        free(result); // Remember to free the allocated memory
+        
     } else {
         printf("No two sum solution found.\n");
     }
