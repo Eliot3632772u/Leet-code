@@ -11,7 +11,7 @@ public class Solution {
                 if (i - oldIndex <= k) return true;
                 map.replace(nums[i], i);
             }
-            map.put(nums[i], i);
+            else map.put(nums[i], i);
         }
 
         return false;
