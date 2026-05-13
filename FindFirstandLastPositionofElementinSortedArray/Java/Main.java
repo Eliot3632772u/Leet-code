@@ -7,4 +7,4 @@ public class Main {
         int[] result = solution.searchRange(nums, target);
         System.out.println("Result: [" + result[0] + ", " + result[1] + "]");
     }
-} 
+}
